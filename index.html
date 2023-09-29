@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .page {
+            height: 100%;
+            width: 100%;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .js {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 50%;
+            object-fit: cover;
+            opacity: 0;
+            transition: .3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+
+
+        <img class="js" src="/wallpaperflare.com_wallpaper.jpg" alt="">
+    </div>
+
+    <script>
+
+
+        let image = document.querySelector(".js");
+        document.querySelector("body").addEventListener("dblclick", function () {
+            image.style.opacity = 1;
+            image.style.scale = "1.1"
+            image.style.scale = "1.2"
+            image.style.scale = "1.3"
+            image.style.scale = "1.4"
+            image.style.scale = "15"
+            setTimeout(function () {
+                image.style.opacity = 0;
+                image.style.scale = "1"
+
+            }, 1000)
+
+        })
+    </script>
+</body>
+
+</html>
