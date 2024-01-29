@@ -17,159 +17,87 @@
 
         html,
         body {
-            height: 100%;
-            width: 100;
-            background: #000;
-        }
-
-        #musicSection {
-            background: linear-gradient(rgba(152, 251, 152, 0.235), rgba(238, 186, 89, 0.183));
-            height: inherit;
-            width: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        .playButton {
-            height: 15vh;
-            width: 15vh;
-            /* background: linear-gradient(rgba(255, 105, 180, 0.141),rgba(255, 166, 0, 0.228)); */
-            display: flex;
-            background-color: black;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .playButton>i {
-            color: white;
-            font-size: 15vh;
-            transition: .2s ease-in-out;
-
-
-        }
-
-        .playButton:hover>i {
-            font-size: 10.1rem;
-        }
-
-        .imageSection {
-            height: auto;
+            height: 100vh;
             width: 100%;
-            /* background: linear-gradient(hsl(20, 100%, 60%), hsl(30, 100%, 70%), hsl(40, 100%, 80%), hsl(80, 60%, 90%)); */
-            background: linear-gradient(hsl(0, 90%, 100%), white);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            align-items: start;
-            gap: 2vh;
-            padding: 5% ;
-        }
-
-        .imageBox {
-
-            border: 2px solid red;
-            border-radius: 5px;
-            overflow: hidden;
-            height: 40vh;
-            width: 30%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            transition: .2s ease-in-out;
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(243, 167, 246, 0.37);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            background: black;
+            background: rgba(45, 138, 175, 0.782);
+            background-image: url("grishma.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            animation: gradient 15s ease infinite;
 
         }
 
-        @media (max-width: 600px) {
-            .imageBox {
-                height: 10vh;
-                width: 10vh;
+
+
+
+        .playpause {
+            width: 100vw;
+            height: 100vh;
+        }
+
+
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
             }
 
-        }
+            50% {
+                background-position: 100% 50%;
+            }
 
-        .imageBox:hover {
-
-            border: 1px solid white;
-
-        }
-
-        .imageBox:hover>img {
-
-            height: 95%;
-            width: 95%;
-
-        }
-
-        img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 5px;
-
-            transition: .2s ease-in-out;
-        }
-
-        .imageSection.eachImageClicked>.imageBox {
-            height: 40vh;
-            width: 90%;
+            100% {
+                background-position: 0% 50%;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div id="musicSection">
-        <div class="linkbox insta"></div>
-        <div class="linkbox fb"></div>
-        <div class="linkbox x"></div>
-        <div class="linkbox yt"></div>
-        <div class="linkbox dev"></div>
-        <div class="playButton">
-            <i class="ri-play-circle-fill play"></i>
-        </div>
-        <audio class="audio" src="music.mp3">
-        </audio>
+
+
+    <div class="playpause pause">
     </div>
+
+
+    <audio src="music.mp3" class="music" loop="loop"></audio>
+    <audio src="bashanta.mp3" class="music" loop="loop"></audio>
+    <audio src="mayakokatha.mp3" class="music" loop="loop"></audio>
 
 
 
 
     <script>
-        let flag = 0;
-        let playButton = document.querySelector('.playButton');
-        playButton.addEventListener('click', function () {
-
-            let audio = document.querySelector('.audio');
-            if (flag == 0) {
-                audio.play()
-                flag = 1;
-
-                document.querySelector(".play").classList.remove("ri-play-circle-fill")
-
-                document.querySelector(".play").classList.add("ri-pause-circle-fill")
-
-            }
-            else {
-                audio.pause()
-                document.querySelector(".play").classList.remove("ri-pause-circle-fill")
-
-                document.querySelector(".play").classList.add("ri-play-circle-fill")
-                flag = 0
-            }
+        let musics = []
+        document.querySelectorAll(".music").forEach((eachMusic) => {
+            musics.push(eachMusic)
         })
 
+
+        let index = Math.floor(Math.random() * musics.length)
+        console.log(index);
+
+        let playpause = document.querySelector(".playpause")
+
+
+
+        playpause.addEventListener("click", () => {
+            if (playpause.classList.contains("pause")) {
+                musics[index].play()
+                playpause.classList.remove("pause")
+                playpause.classList.add("play")
+            }
+            else if (playpause.classList.contains("play")) {
+                musics[index].pause()
+                playpause.classList.add("pause")
+                playpause.classList.remove("play")
+            }
+        })
+        playpause.addEventListener("dblclick", () => {
+            musics[index + 1].play()
+
+        })
 
 
 
