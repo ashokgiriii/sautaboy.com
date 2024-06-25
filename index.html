@@ -16,88 +16,393 @@
             /* background: black; */
         }
 
+        audio {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            overflow-y: hidden;
+            height: 100vh;
+            background: red;
+        }
+
+
         html,
         body {
             height: 100vh;
             width: 100%;
-            background: rgba(45, 138, 175, 0.782);
-            background-image: url("grishma.png");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            animation: gradient 15s ease infinite;
+
         }
-
-
 
 
         .playpause {
-            width: 100vw;
             height: 100vh;
+            position: relative;
+            width: 1680px;
+            overflow: auto;
+            overflow-y: hidden;
+            background: rgba(45, 138, 175, 0.782);
+            border: 1px solid;
         }
 
 
 
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
 
-            50% {
-                background-position: 100% 50%;
-            }
+        .box {
+            position: absolute;
+            z-index: 3;
+            cursor: pointer;
+            transition: .1s ease-in-out;
+            filter: grayscale(60%);
+        }
 
-            100% {
-                background-position: 0% 50%;
-            }
+
+        .box:hover {
+            background: none;
+        }
+
+        .box.peace {
+            height: 512px;
+            width: 278px;
+
+        }
+
+        .box.nailpolish {
+            width: 152px;
+
+            left: 278px;
+            height: 217px;
+        }
+
+        .inblue {
+            width: 72px;
+            height: 98px;
+            left: 448px;
+
+        }
+
+        .inwhitebrownpeace {
+            width: 79px;
+            height: 79px;
+            left: 551px;
+
+        }
+
+        .lookingdown {
+            width: 170px;
+            height: 350px;
+            left: 455px;
+            top: 101px;
+        }
+
+        .panda {
+            width: 152px;
+            height: 151px;
+            left: 470px;
+            top: 491px;
+        }
+
+        .handinchickbig {
+            width: 154px;
+            height: 300px;
+            left: 470px;
+            top: 669px;
+        }
+
+
+        .box.redkurta {
+            height: 169px;
+            width: 170px;
+            top: 234px;
+            left: 279px;
+        }
+
+        .box.haininhair {
+            height: 103px;
+            width: 61px;
+            left: 280px;
+            top: 410px;
+        }
+
+        .handinchick {
+            height: 74px;
+            width: 72px;
+            top: 406px;
+            left: 367px;
+        }
+
+        .handinchin {
+            height: 127px;
+            width: 246px;
+            top: 516px;
+        }
+
+        .inblackdress {
+            height: 120px;
+            width: 91px;
+            top: 520px;
+            left: 253px;
+        }
+
+        .inwhitedotdress {
+            height: 288px;
+            width: 345px;
+            top: 650px;
+        }
+
+        .hanihairblackandwhite {
+            height: 240px;
+            width: 117px;
+            top: 483px;
+            left: 349px;
+        }
+
+        .inyellowgril {
+            height: 240px;
+            width: 115px;
+            top: 753px;
+            left: 352px;
+        }
+
+        .mainimage {
+            height: 950px;
+            width: 499px;
+            left: 630px;
+        }
+
+        .cake {
+            height: 175px;
+            width: 110px;
+            right: 437px
+        }
+
+        .haininhairblack {
+            height: 97px;
+            width: 92px;
+            right: 337px
+        }
+
+        .glass {
+            height: 95px;
+            width: 102px;
+            right: 232px
+        }
+
+        .hairinhand {
+            height: 80px;
+            width: 99px;
+            right: 132px
+        }
+
+        .blackbelt {
+            height: 216px;
+            width: 130px;
+            right: 0px
+        }
+
+        .redtopi {
+            height: 316px;
+            width: 155px;
+            right: 0px;
+            top: 218px;
+        }
+
+        .duichulti {
+            height: 214px;
+            width: 119px;
+            right: 0px;
+            top: calc(216px + 329px);
+        }
+
+        .blackhat {
+            height: 214px;
+            width: 114px;
+            right: 0px;
+            top: calc(216px + 329px + 253px);
+        }
+
+        .inbluepeace {
+            height: 182px;
+            width: 111px;
+            right: 424px;
+            top: 213px;
+        }
+
+        .crisscrossleg {
+            height: 170px;
+            width: 127px;
+            right: 415px;
+            top: 426px;
+        }
+
+        .handinchcikgreendress {
+            height: 500px;
+            width: 168px;
+            right: 379px;
+            top: 642px;
+        }
+
+        .umbrella {
+            height: 400px;
+            width: 155px;
+            right: 124px;
+            top: 718px;
+        }
+
+        .book {
+            height: 200px;
+            width: 90px;
+            right: calc(124px + 160px);
+            bottom: 0;
+        }
+
+        .pink {
+            height: 112px;
+            width: 58px;
+            right: calc(124px + 183px);
+            bottom: 212px;
+        }
+
+        .handinhairblack {
+            height: 206px;
+            width: 101px;
+            right: calc(119px + 183px);
+            bottom: calc(212px + 113px);
+        }
+
+        .inbluetree {
+            height: 178px;
+            width: 85px;
+            right: calc(148px + 183px);
+            bottom: calc(212px + 113px + 212px);
+        }
+
+        .haininchickhair {
+            height: 101px;
+            width: 101px;
+            right: calc(148px + 183px - 8px);
+            bottom: calc(212px + 113px + 212px + 197px);
+        }
+
+        .sari {
+            height: 205px;
+            width: 150px;
+            right: 135px;
+            bottom: 222px;
+        }
+
+        .kidpeace {
+            height: 93px;
+            width: 113px;
+            right: 170px;
+            bottom: calc(205px + 227px);
+        }
+
+        .oshin {
+
+            height: 192px;
+            width: 115px;
+            right: 180px;
+            bottom: calc(205px + 227px + 97px);
+        }
+
+        .sandinhand {
+            height: 113px;
+            width: 165px;
+            right: 132px;
+            bottom: calc(205px + 227px + 97px + 201px);
         }
     </style>
+
+
 </head>
 
 <body>
-
-
     <div class="playpause pause">
+        <img src="grishma.png" alt="">
+        <div class="box peace" data-music="music/bikhari.m4a"></div>
+        <div class="box  nailpolish" data-music="music/bistarai.m4a"></div>
+        <div class="box redkurta " data-music="music/chittibhitra.mp3"></div>
+        <div class="box haininhair " data-music="music/choolo.mp3"></div>
+        <div class="box handinchick " data-music="music/gauthali.m4a"></div>
+        <div class="box handinchin " data-music="music/goreto.m4a"></div>
+        <div class="box inblackdress " data-music="music/hami.m4a"></div>
+        <div class="box inwhitedotdress " data-music="music/hataridai.m4a"></div>
+        <div class="box hanihairblackandwhite " data-music="music/hawajastai.m4a"></div>
+        <div class="box inyellowgril " data-music="music/kaloseto.mp3"></div>
+        <div class="box inblue " data-music="music/kasari.m4a"></div>
+        <div class="box inwhitebrownpeace" data-music="music/kohau.mp3"></div>
+        <div class="box lookingdown" data-music="music/lajalu.m4a"></div>
+        <div class="box panda" data-music="music/lakhau.m4a"></div>
+        <div class="box handinchickbig" data-music="music/maaya.mp3"></div>
+        <div class="box mainimage" data-music="music/maili.m4a"></div>
+        <div class="box cake" data-music="music/manchari.m4a"></div>
+        <div class="box inbluepeace" data-music="music/mankakura.mp3"></div>
+        <div class="box crisscrossleg" data-music="music/marijau.m4a"></div>
+        <div class="box handinchcikgreendress" data-music="music/mayakotira.m4a"></div>
+        <div class="box haininhairblack" data-music="music/Mayalu(0).m4a"></div>
+        <div class="box glass" data-music="music/muskurahera.m4a"></div>
+        <div class="box hairinhand" data-music="music/mutudekhin.mp3"></div>
+        <div class="box blackbelt" data-music="music/nabolamasanga.m4a"></div>
+        <div class="box redtopi" data-music="music/nachaheko.mp3"></div>
+        <div class="box duichulti" data-music="music/najik.m4a"></div>
+        <div class="box blackhat" data-music="music/ohchampa.m4a"></div>
+        <div class="box sandinhand" data-music="music/parabataaayeu.m4a"></div>
+        <div class="box oshin" data-music="music/paranai.mp3"></div>
+        <div class="box kidpeace" data-music="music/ranga.mp3"></div>
+        <div class="box sari" data-music="music/sadhana.m4a"></div>
+        <div class="box umbrella" data-music="music/sanuma.m4a"></div>
+        <div class="box book" data-music="music/timikaha.m4a"></div>
+        <div class="box pink" data-music="music/timirama.m4a"></div>
+        <div class="box handinhairblack" data-music="music/timroman.m4a"></div>
+        <div class="box inbluetree" data-music="music/vanana.m4a"></div>
+        <div class="box haininchickhair" data-music="music/yosahar.m4a"></div>
     </div>
 
 
-    <audio src="music.mp3" class="music" loop="loop"></audio>
-    <audio src="bashanta.mp3" class="music" loop="loop"></audio>
-    <audio src="mayakokatha.mp3" class="music" loop="loop"></audio>
 
-
-
+    <audio id="audioPlayer" controls style="display: none;"></audio>
 
     <script>
-        let musics = []
-        document.querySelectorAll(".music").forEach((eachMusic) => {
-            musics.push(eachMusic)
-        })
+        document.addEventListener("DOMContentLoaded", function () {
+            var boxes = document.querySelectorAll(".box"); // Select all boxes
+            var audioPlayer = document.getElementById("audioPlayer"); // Get audio player element
+            var currentAudio = null; // Variable to store the currently playing audio
 
-
-        let index = Math.floor(Math.random() * musics.length)
-        console.log(index);
-
-        let playpause = document.querySelector(".playpause")
-
-
-
-        playpause.addEventListener("click", () => {
-            if (playpause.classList.contains("pause")) {
-                musics[index].play()
-                playpause.classList.remove("pause")
-                playpause.classList.add("play")
+            // Function to play audio
+            function playAudio(audioSrc) {
+                audioPlayer.src = audioSrc;
+                audioPlayer.play();
+                currentAudio = audioPlayer;
             }
-            else if (playpause.classList.contains("play")) {
-                musics[index].pause()
-                playpause.classList.add("pause")
-                playpause.classList.remove("play")
-            }
-        })
 
+            // Add click event listener to each box
+            boxes.forEach(function (box) {
+                box.addEventListener("click", function () {
+                    var audioSrc = box.getAttribute("data-music"); // Get music path from data-music attribute
+                    playAudio(audioSrc); // Play the selected audio
 
+                    // Pause the previously playing audio (if any)
+                    if (currentAudio && currentAudio !== audioPlayer) {
+                        currentAudio.pause();
+                        currentAudio.currentTime = 0; // Reset playback position
+                    }
+                });
+            });
 
+            // Pause current audio when audio player ends
+            audioPlayer.addEventListener("ended", function () {
+                audioPlayer.currentTime = 0; // Reset playback position
+                currentAudio = null; // Reset currently playing audio
+            });
+        });
     </script>
+
 </body>
 
 </html>
