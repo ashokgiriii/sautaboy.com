@@ -318,8 +318,6 @@
             bottom: calc(205px + 227px + 97px + 201px);
         }
     </style>
-
-
 </head>
 
 <body>
@@ -366,32 +364,285 @@
 
 
 
-    <audio id="audioPlayer" controls style="display: none;"></audio>
+    <audio id="audioPlayer"></audio>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var boxes = document.querySelectorAll(".box"); // Select all boxes
             var audioPlayer = document.getElementById("audioPlayer"); // Get audio player element
             var currentAudio = null; // Variable to store the currently playing audio
+            var doubleClickTimeout = 300; // Max time (ms) between clicks to consider as double-click
+            var lastClickTime = 0; // Time of the last click
+            var lastBox = null; // The last clicked box
 
             // Function to play audio
             function playAudio(audioSrc) {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0; // Reset playback position
+                }
                 audioPlayer.src = audioSrc;
                 audioPlayer.play();
                 currentAudio = audioPlayer;
             }
 
+            // Function to get a random audio
+            function getRandomAudio() {
+                var audios = [
+                    "voice/audioclip16986112040001718_1057785601850095.mp4",
+                    "voice/audioclip16986112390001904_263440493344814.mp4",
+                    "voice/audioclip16986112690001509_869087937798879.mp4",
+                    "voice/audioclip16986112720002438_704027764987870.mp4",
+                    "voice/audioclip16986113270005062_204588312666247.mp4",
+                    "voice/audioclip16986113330005271_313171931609037.mp4",
+                    "voice/audioclip16986114000002740_358925266519270.mp4",
+                    "voice/audioclip16986838480003158_1240363853494525.mp4",
+                    "voice/audioclip16986849960003460_3296269700516928.mp4",
+                    "voice/audioclip16986927890002159_1438260093385678.mp4",
+                    "voice/audioclip16986928400003970_808758480931726.mp4",
+                    "voice/audioclip16986932490001950_1269398917066770.mp4",
+                    "voice/audioclip16988614170002415_233724889719264.mp4",
+                    "voice/audioclip16988621570002856_308007275339252.mp4",
+                    "voice/audioclip16988621600002299_3426904424240079.mp4",
+                    "voice/audioclip16988622290001974_1041348367312944.mp4",
+                    "voice/audioclip16991108630002879_907640230211807.mp4",
+                    "voice/audioclip16991114700005457_676698177938403.mp4",
+                    "voice/audioclip16994232430002693_860200942184706.mp4",
+                    "voice/audioclip16994595980002461_2004369313269012.mp4",
+                    "voice/audioclip16994603130002206_376409631385176.mp4",
+                    "voice/audioclip16994604090002926_1095513591754951.mp4",
+                    "voice/audioclip16995460880002786_1703762643432302.mp4",
+                    "voice/audioclip16996374090001184_1021205172449257.mp4",
+                    "voice/audioclip16996391810002299_324213210318094.mp4",
+                    "voice/audioclip16996397970001556_358534359880620.mp4",
+                    "voice/audioclip16996402390001834_2195598277457965.mp4",
+                    "voice/audioclip16996734170004922_867638241653909.mp4",
+                    "voice/audioclip16996740780003297_2302569846594578.mp4",
+                    "voice/audioclip16996741790002810_728461219181918.mp4",
+                    "voice/audioclip16997290460003019_879773356852602.mp4",
+                    "voice/audioclip16997291140002206_363755789424815.mp4",
+                    "voice/audioclip16997291180002531_892387852483601.mp4",
+                    "voice/audioclip16997294090001811_1667075170454182.mp4",
+                    "voice/audioclip16997294110001393_323974340427861.mp4",
+                    "voice/audioclip16998133360002020_1537919170080897.mp4",
+                    "voice/audioclip16998133740009288_1063783361632458.mp4",
+                    "voice/audioclip16998135630003460_808386821037125.mp4",
+                    "voice/audioclip16998138650002856_998868281343598.mp4",
+                    "voice/audioclip16998138870007941_648377837411353.mp4",
+                    "voice/audioclip16998138930004435_371013545431172.mp4",
+                    "voice/audioclip16998141180003715_265457969418191.mp4",
+                    "voice/audioclip16998150400001695_1991095147928539.mp4",
+                    "voice/audioclip16998483790003854_7187635061280910.mp4",
+                    "voice/audioclip16998822660001672_730932002214582.mp4",
+                    "voice/audioclip16998958190001788_1485448661998082.mp4",
+                    "voice/audioclip16998959650002159_1031125598038026.mp4",
+                    "voice/audioclip16998960060006501_1130227294606773.mp4",
+                    "voice/audioclip16998961260002531_242576465491940.mp4",
+                    "voice/audioclip16998961320004922_1305330526792223.mp4",
+                    "voice/audioclip16999735710006176_1587475518662675.mp4",
+                    "voice/audioclip17000598340008777_158289417373522.mp4",
+                    "voice/audioclip17000610200002252_253805307679249.mp4",
+                    "voice/audioclip17000610740002183_806931381189622.mp4",
+                    "voice/audioclip17000610840004017_1713792652366328.mp4",
+                    "voice/audioclip17000611150004876_258314003540111.mp4",
+                    "voice/audioclip17000697270005921_872998460864425.mp4",
+                    "voice/audioclip17002074910004899_876779900355166.mp4",
+                    "voice/audioclip17002075250003506_373153128424891.mp4",
+                    "voice/audioclip17002075960004319_708824437834345.mp4",
+                    "voice/audioclip17002076560002995_309399842044811.mp4",
+                    "voice/audioclip17002077500008986_997962087959226.mp4",
+                    "voice/audioclip17002409470004063_884022912846812.mp4",
+                    "voice/audioclip17002409780002183_1647009542495803.mp4",
+                    "voice/audioclip17002410540001579_355129260234279.mp4",
+                    "voice/audioclip17002410690003367_661739149468988.mp4",
+                    "voice/audioclip17002413480007569_258473340191296.mp4",
+                    "voice/audioclip17002413520002322_988866148841367.mp4",
+                    "voice/audioclip17002413830008196_3579817948973228.mp4",
+                    "voice/audioclip17002414860004574_280238651674172.mp4",
+                    "voice/audioclip17002414970002299_315673881409463.mp4",
+                    "voice/audioclip17002415620003529_1317837762268992.mp4",
+                    "voice/audioclip17002416040006710_332515246048688.mp4",
+                    "voice/audioclip17002416080001974_1527558957997222.mp4",
+                    "voice/audioclip17002417430006478_299042142962195.mp4",
+                    "voice/audioclip17002417730001997_324389046968625.mp4",
+                    "voice/audioclip17002417950004179_251818121235251.mp4",
+                    "voice/audioclip17002418470003019_872048901164217.mp4",
+                    "voice/audioclip17002418960003924_231965816413784.mp4",
+                    "voice/audioclip17002419080007686_1382564616028787.mp4",
+                    "voice/audioclip17002419930002647_1574620049742038.mp4",
+                    "voice/audioclip17002422190005898_1381837976101874.mp4",
+                    "voice/audioclip17002422580004899_206364749167163.mp4",
+                    "voice/audioclip17002425760006850_852045063052491.mp4",
+                    "voice/audioclip17002846300001579_870548131270295.mp4",
+                    "voice/audioclip17002848440002670_373840261655027.mp4",
+                    "voice/audioclip17002863380002368_738374931503614.mp4",
+                    "voice/audioclip17002863460003645_876506610368436.mp4",
+                    "voice/audioclip17002864530005665_271175329257103.mp4",
+                    "voice/audioclip17002866500007059_995147165118820.mp4",
+                    "voice/audioclip17002866700005967_1344586539781151.mp4",
+                    "voice/audioclip17002867480007407_1392806074984120.mp4",
+                    "voice/audioclip17002867610006641_1058823218462954.mp4",
+                    "voice/audioclip17002868400007360_896608305376800.mp4",
+                    "voice/audioclip17002871150002949_2268816733314088.mp4",
+                    "voice/audioclip17002871990002484_1854096291700339.mp4",
+                    "voice/audioclip17002872540003251_635195585220746.mp4",
+                    "voice/audioclip17002873190005665_326503296754609.mp4",
+                    "voice/audioclip17002874070009613_755915233041964.mp4",
+                    "voice/audioclip17002874170005619_666929892092289.mp4",
+                    "voice/audioclip17002875240006107_260643063649191.mp4",
+                    "voice/audioclip17003273180001834_899827371558080.mp4",
+                    "voice/audioclip17003273320002624_668731355085851.mp4",
+                    "voice/audioclip17003277080001509_659007063054468.mp4",
+                    "voice/audioclip17004031170008475_1020555852367216.mp4",
+                    "voice/audioclip17004040420004156_276108808259464.mp4",
+                    "voice/audioclip17004040990003506_576395884629279.mp4",
+                    "voice/audioclip17004629940002577_352196290724227.mp4",
+                    "voice/audioclip17004982030003506_713161327534258.mp4",
+                    "voice/audioclip17004984150003529_886808143116100.mp4",
+                    "voice/audioclip17004984690006316_730246118576156.mp4",
+                    "voice/audioclip17004984720002554_645255601109592.mp4",
+                    "voice/audioclip17004985630002229_1091885035317047.mp4",
+                    "voice/audioclip17005583780003088_643401837717853.mp4",
+                    "voice/audioclip17005584500002299_879149280090664.mp4",
+                    "voice/audioclip17006576840006200_901190421575120.mp4",
+                    "voice/audioclip17006684150004783_1105569833943449.mp4",
+                    "voice/audioclip17008098190006339_277788158576721.mp4",
+                    "voice/audioclip17008104400007500_1085722046204180.mp4",
+                    "voice/audioclip17008106150003390_353524687353791.mp4",
+                    "voice/audioclip17008897820002020_1140966097308976.mp4",
+                    "voice/audioclip17009191670009822_1027664905156898.mp4",
+                    "voice/audioclip17009191910006339_2023519304697988.mp4",
+                    "voice/audioclip17009192340006757_890581689078050.mp4",
+                    "voice/audioclip17011871430005758_320476770766985.mp4",
+                    "voice/audioclip17011871500006037_860707942187565.mp4",
+                    "voice/audioclip17011872590003622_1388386342105295.mp4",
+                    "voice/audioclip17011872680007198_882718810225228.mp4",
+                    "voice/audioclip17011953040002879_1497110477812960.mp4",
+                    "voice/audioclip17011953180006641_268762412446976.mp4",
+                    "voice/audioclip17011959750007477_909231547503591.mp4",
+                    "voice/audioclip17011962530004319_1057020478634677.mp4",
+                    "voice/audioclip17011963030006919_2703457149821268.mp4",
+                    "voice/audioclip17011963070002601_341427661844885.mp4",
+                    "voice/audioclip17011963690003529_176434648886679.mp4",
+                    "voice/audioclip17014055090002601_234269892893931.mp4",
+                    "voice/audioclip17014055160004087_766165158653941.mp4",
+                    "voice/audioclip17014056850004226_205997615888953.mp4",
+                    "voice/audioclip17014058050002786_374911514976804.mp4",
+                    "voice/audioclip17014058130004923_1326264641588764.mp4",
+                    "voice/audioclip17014058230005387_366531979369254.mp4",
+                    "voice/audioclip17014060040006455_670979081816862.mp4",
+                    "voice/audioclip17014063430005294_785359856764038.mp4",
+                    "voice/audioclip17014064350008034_3636734843235238.mp4",
+                    "voice/audioclip17034411760002694_685627947010429.mp4",
+                    "voice/audioclip17064662480006316_296655540058262.mp4",
+                    "voice/audioclip17079946480003437_1387468308558945.mp4",
+                    "voice/audioclip17080007030006687_306205752452641.mp4",
+                    "voice/audioclip17080007350002322_277247952049896.mp4",
+                    "voice/audioclip17080774410003297_902852781340000.mp4",
+                    "voice/audioclip17080774800004551_775292961134237.mp4",
+                    "voice/audioclip17080775120005248_759160955799909.mp4",
+                    "voice/audioclip17081024420005480_821308243137788.mp4",
+                    "voice/audioclip17081026890002415_1536333847099997.mp4",
+                    "voice/audioclip17081026950004458_325765106583195.mp4",
+                    "voice/audioclip17081473050008034_888571346283381.mp4",
+                    "voice/audioclip17082756780002694_777933987002707.mp4",
+                    "voice/audioclip17082788210004458_2378246909230914.mp4",
+                    "voice/audioclip17082788240002461_620855723519527.mp4",
+                    "voice/audioclip17082813000009845_335835126113848.mp4",
+                    "voice/audioclip17082838510006919_716731097234472.mp4",
+                    "voice/audioclip17082839660007291_1726290344527705.mp4",
+                    "voice/audioclip17082840320009566_678462244242349.mp4",
+                    "voice/audioclip17082840730009984_931837678478204.mp4",
+                    "voice/audioclip17082842190004598_261194640401279.mp4",
+                    "voice/audioclip17082843450005108_407216508362454.mp4",
+                    "voice/audioclip17082846530003529_406560561921394.mp4",
+                    "voice/audioclip17099156100007477_270999549378200.mp4",
+                    "voice/audioclip17099156420009195_1503303953602275.mp4",
+                    "voice/audioclip17099159070003715_1624542288084547.mp4",
+                    "voice/audioclip17099159460004226_940145837770673.mp4",
+                    "voice/audioclip17099159630002229_728661536001094.mp4",
+                    "voice/audioclip17101661970003251_386617957487847.mp4",
+                    "voice/audioclip17137671240002554_1148603569617393.mp4",
+                    "voice/audioclip169868553800010356_724671722812637.mp4",
+                    "voice/audioclip169911148400010774_3570621686559396.mp4",
+                    "voice/audioclip169953359700026702_678241274373506.mp4",
+                    "voice/audioclip169967419500010495_1061927521927669.mp4",
+                    "voice/audioclip169981342300031137_1627294161128867.mp4",
+                    "voice/audioclip169989485700059812_361195103258570.mp4",
+                    "voice/audioclip169989487900021687_997611714865903.mp4",
+                    "voice/audioclip169989575400010309_237621476000864.mp4",
+                    "voice/audioclip169989615600022824_1037812450799709.mp4",
+                    "voice/audioclip169997451700019481_658343086480907.mp4",
+                    "voice/audioclip170024136700010100_1380655712816496.mp4",
+                    "voice/audioclip170024140300013839_1062849664891975.mp4",
+                    "voice/audioclip170024142800013978_1094474031914514.mp4",
+                    "voice/audioclip170024145300012538_317192004412297.mp4",
+                    "voice/audioclip170024147500011842_365962295994305.mp4",
+                    "voice/audioclip170024159100014605_268718402403180.mp4",
+                    "voice/audioclip170024179000012678_363999986018626.mp4",
+                    "voice/audioclip170024181900010263_209063595556966.mp4",
+                    "voice/audioclip170028694200014117_746759437257104.mp4",
+                    "voice/audioclip170028739700012120_695011695913464.mp4",
+                    "voice/audioclip170040170100029558_918567912944039.mp4",
+                    "voice/audioclip170040263900059557_857737269381106.mp4",
+                    "voice/audioclip170040271300059812_848289543425938.mp4",
+                    "voice/audioclip170040273500021036_897686638594592.mp4",
+                    "voice/audioclip170040278700030556_783976070116999.mp4",
+                    "voice/audioclip170040284200052521_585413013710979.mp4",
+                    "voice/audioclip170040287000028652_856224569482208.mp4",
+                    "voice/audioclip170040291300036059_667778168505437.mp4",
+                    "voice/audioclip170040293900022337_723883589791534.mp4",
+                    "voice/audioclip170040318000059835_733625634784158.mp4",
+                    "voice/audioclip170040320400023474_1282747089788907.mp4",
+                    "voice/audioclip170055837400020990_1074682480375259.mp4",
+                    "voice/audioclip170057698300012167_892034602516281.mp4",
+                    "voice/audioclip170058312000014837_1406800319906990.mp4",
+                    "voice/audioclip170063258800020038_158279377347220.mp4",
+                    "voice/audioclip170063261100022731_636925988387859.mp4",
+                    "voice/audioclip170063262800015557_341431908507489.mp4",
+                    "voice/audioclip170066807900019318_25155607150696832.mp4",
+                    "voice/audioclip170080968800033575_1740566139742506.mp4",
+                    "voice/audioclip170080975000059835_288390076930593.mp4",
+                    "voice/audioclip170080981200059835_687366290189602.mp4",
+                    "voice/audioclip170081048800044836_373793951887646.mp4",
+                    "voice/audioclip170081050600016486_767510498458309.mp4",
+                    "voice/audioclip170118710100018483_1076088397140998.mp4",
+                    "voice/audioclip170118719500010124_727134975980395.mp4",
+                    "voice/audioclip170118725500021037_2727485860765093.mp4",
+                    "voice/audioclip170119663200014396_322563130626465.mp4",
+                    "voice/audioclip170140640300010124_6797658050282897.mp4",
+                    "voice/audioclip170140642600020944_911602560587590.mp4",
+                    "voice/audioclip170144919200013328_876839287241837.mp4",
+                    "voice/audioclip170800072300012399_688280709895504.mp4",
+                    "voice/audioclip170800113800056516_409221284962720.mp4",
+                    "voice/audioclip170828388800019086_931280698106398.mp4",
+                    "voice/audioclip170828399000016114_1451491995785401.mp4",
+                    "voice/audioclip170828405600019179_730007185554857.mp4",
+                    "voice/audioclip170922920000011935_1095043368205084.mp4",
+                    "voice/audioclip170991523200036594_372806388966335.mp4",
+                    "voice/audioclip170991539200046254_1634571703947781.mp4",
+                    // Add all other audio file paths here
+                ];
+                var randomIndex = Math.floor(Math.random() * audios.length);
+                return audios[randomIndex];
+            }
+
             // Add click event listener to each box
             boxes.forEach(function (box) {
-                box.addEventListener("click", function () {
-                    var audioSrc = box.getAttribute("data-music"); // Get music path from data-music attribute
-                    playAudio(audioSrc); // Play the selected audio
-
-                    // Pause the previously playing audio (if any)
-                    if (currentAudio && currentAudio !== audioPlayer) {
-                        currentAudio.pause();
-                        currentAudio.currentTime = 0; // Reset playback position
+                box.addEventListener("click", function (event) {
+                    var currentTime = new Date().getTime();
+                    if (currentTime - lastClickTime < doubleClickTimeout && lastBox === box) {
+                        // Double-click detected
+                        var randomAudio = getRandomAudio(); // Get a random audio
+                        playAudio(randomAudio); // Play the random audio
+                    } else {
+                        // Single-click detected
+                        var audioSrc = box.getAttribute("data-music"); // Get music path from data-music attribute
+                        playAudio(audioSrc); // Play the selected audio
                     }
+                    lastClickTime = currentTime;
+                    lastBox = box;
                 });
             });
 
