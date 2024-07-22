@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .question-container {
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .option:hover {
+            background-color: #0056b3;
+        }
+
+        .result p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #next-button {
+            background-color: #007bff;
+        }
+
+        #next-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>Random Quiz Game</h1>
+        <div class="question-container">
+            <p id="question">Question will appear here</p>
+        </div>
+        <div class="options">
+            <button class="option" data-answer="A">Option A</button>
+            <button class="option" data-answer="B">Option B</button>
+            <button class="option" data-answer="C">Option C</button>
+            <button class="option" data-answer="D">Option D</button>
+        </div>
+        <div class="result">
+            <p id="message"></p>
+            <p>Score: <span id="score">0</span></p>
+            <button id="next-button" style="display: none;">Next Question</button>
+            <button id="restart-button" style="display: none;">Restart Quiz</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questionElement = document.getElementById('question');
+            const options = document.querySelectorAll('.option');
+            const messageDisplay = document.getElementById('message');
+            const scoreDisplay = document.getElementById('score');
+            const nextButton = document.getElementById('next-button');
+            const restartButton = document.getElementById('restart-button');
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let questions = [];
+
+            async function loadQuestions() {
+                try {
+                    const response = await fetch('questions.json');
+                    questions = await response.json();
+                    questions = shuffleArray(questions);
+                    loadQuestion();
+                } catch (error) {
+                    console.error('Error loading questions:', error);
+                }
+            }
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            function loadQuestion() {
+                if (questions.length === 0) {
+                    messageDisplay.textContent = 'No questions available.';
+                    return;
+                }
+
+                const currentQuestion = questions[currentQuestionIndex];
+                questionElement.textContent = currentQuestion.question;
+                options.forEach(option => {
+                    const answer = option.dataset.answer;
+                    option.textContent = currentQuestion.options[answer];
+                    option.addEventListener('click', checkAnswer);
+                });
+                messageDisplay.textContent = '';
+                nextButton.style.display = 'none';
+            }
+
+            function checkAnswer(event) {
+                const selectedAnswer = event.target.dataset.answer;
+                const correctAnswer = questions[currentQuestionIndex].answer;
+
+                if (selectedAnswer === correctAnswer) {
+                    messageDisplay.textContent = 'Correct!';
+                    score++;
+                } else {
+                    messageDisplay.textContent = 'Incorrect! The correct answer was ' + questions[currentQuestionIndex].options[correctAnswer] + '.';
+                }
+
+                scoreDisplay.textContent = score;
+                options.forEach(option => option.removeEventListener('click', checkAnswer));
+                nextButton.style.display = 'block';
+            }
+
+            function nextQuestion() {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    messageDisplay.textContent = 'Quiz finished! Your final score is ' + score + '.';
+                    nextButton.style.display = 'none';
+                    restartButton.style.display = 'block';
+                }
+            }
+
+            function restartQuiz() {
+                questions = shuffleArray(questions);  // Shuffle questions for the next round
+                currentQuestionIndex = 0;
+                score = 0;
+                scoreDisplay.textContent = score;
+                restartButton.style.display = 'none';
+                loadQuestion();
+            }
+
+            nextButton.addEventListener('click', nextQuestion);
+            restartButton.addEventListener('click', restartQuiz);
+
+            loadQuestions();
+        });
+
+    </script>
+</body>
+
+</html>

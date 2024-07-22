@@ -4,159 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>Play Games</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            background-color: #111;
+        }
+
+        * {
+            box-sizing: border-box;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
         }
 
         h1 {
-            margin-bottom: 20px;
+            color: #fff;
         }
 
-        #gameContainer {
-            position: relative;
-        }
-
-        .board {
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 5px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 20px;
         }
 
-        .cell {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-            border: 2px solid #333;
-            cursor: pointer;
+        .grid-item {
+            background-color: #222;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
 
-        .cell:empty:hover {
-            background-color: #f0f0f0;
+        .grid-item img {
+            width: 100%;
+            height: 80%;
         }
 
-        .cell.winner {
-            background-color: green;
-            color: white;
+        .grid-item p {
+            margin: 10px;
+            font-size: 16px;
+            color: #fff;
+            text-align: center;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-
-        #gameMessage {
-            margin-top: 20px;
-            font-size: 1.5em;
+        .grid-item:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 
 <body>
-    <h1>Tic-Tac-Toe</h1>
-    <div id="gameContainer">
-        <div id="gameBoard" class="board">
-            <div class="cell" data-cell-index="0"></div>
-            <div class="cell" data-cell-index="1"></div>
-            <div class="cell" data-cell-index="2"></div>
-            <div class="cell" data-cell-index="3"></div>
-            <div class="cell" data-cell-index="4"></div>
-            <div class="cell" data-cell-index="5"></div>
-            <div class="cell" data-cell-index="6"></div>
-            <div class="cell" data-cell-index="7"></div>
-            <div class="cell" data-cell-index="8"></div>
+    <nav>
+        <!-- <ul class="navbar">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Games</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul> -->
+    </nav>
+    <main>
+        <h1>Play Games</h1>
+        <div class="grid-container">
+            <a href="tictactoe.html" class="grid-item">
+                <img src="/images/tictactoe.png" alt="Game 1">
+                <p>Tic Tac Toe</p>
+            </a>
+            <a href="catchtheball.html" class="grid-item"><img src="/images/catchtheball.png" alt="Game 2">
+                <p>Catch The Ball</p>
+            </a>
+            <a href="whackamole.html" class="grid-item"><img src="/images/mock.png" alt="Game 3">
+                <p>Whack a Mole</p>
+            </a>
+            <a href="rockpaperscissors.html" class="grid-item"><img src="/images/rockscissor.png" alt="Game 4">
+                <p>Rock, Paper, Scissors</p>
+            </a>
+            <a href="gauessthenumber.html" class="grid-item"><img src="/images/guessnumber.png" alt="Game 5">
+                <p>Guess the Number</p>
+            </a>
+            <a href="quiz.html" class="grid-item"><img src="/images/quiz.png" alt="Game 6">
+                <p>Quiz</p>
+            </a>
+            <a href="snake.html" class="grid-item"><img src="/images/snake.png" alt="Game 7">
+                <p>Snake</p>
+            </a>
+            <a href="shapeshooter.html" class="grid-item"><img src="/images/shapeshooter.png" alt="Game 8">
+                <p>Shape Shooter</p>
+            </a>
         </div>
-        <div id="gameMessage"></div>
-    </div>
-    <button id="restartButton">Restart Game</button>
-    <script>
-        const cells = document.querySelectorAll('.cell');
-        const restartButton = document.getElementById('restartButton');
-        const gameMessage = document.getElementById('gameMessage');
-        const board = Array(9).fill(null);
-        let currentPlayer = 'X';
-
-        function handleClick(event) {
-            const cellIndex = event.target.dataset.cellIndex;
-            if (board[cellIndex] !== null) return;
-
-            board[cellIndex] = currentPlayer;
-            event.target.textContent = currentPlayer;
-
-            const winCombination = checkWin();
-            if (winCombination) {
-                displayWin(winCombination);
-                cells.forEach(cell => cell.removeEventListener('click', handleClick));
-                return;
-            }
-
-            if (board.every(cell => cell !== null)) {
-                gameMessage.textContent = 'Draw!';
-                return;
-            }
-
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }
-
-        function checkWin() {
-            const winPatterns = [
-                [0, 1, 2],
-                [3, 4, 5],
-                [6, 7, 8],
-                [0, 3, 6],
-                [1, 4, 7],
-                [2, 5, 8],
-                [0, 4, 8],
-                [2, 4, 6]
-            ];
-
-            for (const pattern of winPatterns) {
-                const [a, b, c] = pattern;
-                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                    return pattern;
-                }
-            }
-            return null;
-        }
-
-        function displayWin(pattern) {
-            pattern.forEach(index => {
-                cells[index].classList.add('winner');
-            });
-            gameMessage.textContent = `${currentPlayer} wins!`;
-        }
-
-        function restartGame() {
-            board.fill(null);
-            cells.forEach(cell => {
-                cell.textContent = '';
-                cell.classList.remove('winner');
-                cell.addEventListener('click', handleClick, { once: true });
-            });
-            gameMessage.textContent = '';
-            currentPlayer = 'X';
-        }
-
-        cells.forEach(cell => {
-            cell.addEventListener('click', handleClick, { once: true });
-        });
-
-        restartButton.addEventListener('click', restartGame);
-
-    </script>
+    </main>
 </body>
 
 </html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack-a-Mole</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+            margin: 20px auto;
+        }
+
+        .hole {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .hole.active {
+            background-color: #8b4513;
+        }
+
+        .hole.active::before {
+            content: '';
+            width: 50px;
+            height: 50px;
+            background-image: url('mole.png');
+            background-size: cover;
+            position: absolute;
+            top: 25px;
+            left: 25px;
+        }
+
+        .scoreboard {
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>Whack-a-Mole!</h1>
+        <div class="grid">
+            <div class="hole" id="hole1"></div>
+            <div class="hole" id="hole2"></div>
+            <div class="hole" id="hole3"></div>
+            <div class="hole" id="hole4"></div>
+            <div class="hole" id="hole5"></div>
+            <div class="hole" id="hole6"></div>
+            <div class="hole" id="hole7"></div>
+            <div class="hole" id="hole8"></div>
+            <div class="hole" id="hole9"></div>
+        </div>
+        <div class="scoreboard">
+            <p>Score: <span id="score">0</span></p>
+            <p>Time Left: <span id="time">30</span> seconds</p>
+        </div>
+        <button id="start-button">Start Game</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const holes = document.querySelectorAll('.hole');
+            const scoreDisplay = document.getElementById('score');
+            const timeDisplay = document.getElementById('time');
+            const startButton = document.getElementById('start-button');
+
+            let score = 0;
+            let timeLeft = 30;
+            let timer;
+            let moleTimer;
+
+            function randomHole() {
+                holes.forEach(hole => hole.classList.remove('active'));
+                const randomIndex = Math.floor(Math.random() * holes.length);
+                holes[randomIndex].classList.add('active');
+            }
+
+            function startGame() {
+                score = 0;
+                timeLeft = 30;
+                scoreDisplay.textContent = score;
+                timeDisplay.textContent = timeLeft;
+                startButton.disabled = true;
+
+                timer = setInterval(() => {
+                    timeLeft--;
+                    timeDisplay.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        clearInterval(moleTimer);
+                        alert('Game Over! Your score is ' + score);
+                        startButton.disabled = false;
+                    }
+                }, 1000);
+
+                moleTimer = setInterval(randomHole, 800);
+            }
+
+            holes.forEach(hole => {
+                hole.addEventListener('click', () => {
+                    if (hole.classList.contains('active')) {
+                        score++;
+                        scoreDisplay.textContent = score;
+                        hole.classList.remove('active');
+                    }
+                });
+            });
+
+            startButton.addEventListener('click', startGame);
+        });
+
+    </script>
+</body>
+
+</html>

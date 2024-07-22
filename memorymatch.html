@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .scoreboard {
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 2em;
+            color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .card img {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card.flipped img {
+            display: block;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>Memory Match Game</h1>
+        <div class="scoreboard">
+            <p>Score: <span id="score">0</span></p>
+            <p>Attempts: <span id="attempts">0</span></p>
+        </div>
+        <div class="grid">
+            <!-- Cards will be dynamically generated here -->
+        </div>
+        <button id="restart-button">Restart Game</button>
+    </div>
+    <script>document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.querySelector('.grid');
+            const scoreDisplay = document.getElementById('score');
+            const attemptsDisplay = document.getElementById('attempts');
+            const restartButton = document.getElementById('restart-button');
+
+            const images = [
+                '/images/img.jpg',
+                '/images/img.jpg', '/images/2.jpeg', '/images/9.jpeg', '/images/img.jpg', '/images/img.jpg', '/images/img.jpg', '/images/3.jpeg', '/images/img.jpg', '/images/4.jpeg', '/images/img.jpg', '/images/img.jpg', '/images/img.jpg', '/images/img.jpg',
+            ];
+
+            let shuffledImages = shuffle(images);
+            let flippedCards = [];
+            let score = 0;
+            let attempts = 0;
+
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            function createCard(image) {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                const img = document.createElement('img');
+                img.src = image;
+                card.appendChild(img);
+                card.addEventListener('click', () => flipCard(card, image));
+                return card;
+            }
+
+            function flipCard(card, image) {
+                if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+                    card.classList.add('flipped');
+                    card.querySelector('img').style.display = 'block';
+                    flippedCards.push({ card, image });
+
+                    if (flippedCards.length === 2) {
+                        attempts++;
+                        attemptsDisplay.textContent = attempts;
+                        setTimeout(checkMatch, 1000);
+                    }
+                }
+            }
+
+            function checkMatch() {
+                const [first, second] = flippedCards;
+                if (first.image === second.image) {
+                    score++;
+                    scoreDisplay.textContent = score;
+                } else {
+                    first.card.classList.remove('flipped');
+                    second.card.classList.remove('flipped');
+                    first.card.querySelector('img').style.display = 'none';
+                    second.card.querySelector('img').style.display = 'none';
+                }
+                flippedCards = [];
+                if (score === images.length / 2) {
+                    setTimeout(() => alert('You win!'), 500);
+                }
+            }
+
+            function initGame() {
+                grid.innerHTML = '';
+                shuffledImages.forEach(image => {
+                    const card = createCard(image);
+                    grid.appendChild(card);
+                });
+                score = 0;
+                attempts = 0;
+                scoreDisplay.textContent = score;
+                attemptsDisplay.textContent = attempts;
+            }
+
+            restartButton.addEventListener('click', initGame);
+
+            initGame();
+        });
+    </script>
+</body>
+
+</html>

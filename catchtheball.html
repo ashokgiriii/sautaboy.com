@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Ball Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            border: 1px solid #000;
+            max-width: 90%;
+            height: auto;
+            height: 50vh;
+        }
+
+        .score-board {
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: fixed;
+            bottom: 1rem;
+            display: none;
+
+        }
+
+        button {
+            padding: 20px;
+            font-size: 16px;
+            background-color: #0095DD;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+            /* Prevent text selection */
+            -webkit-touch-callout: none;
+            /* Prevent context menu on iOS */
+        }
+
+        button:active {
+            background-color: #005F8A;
+        }
+
+        @media(max-width:768px) {
+            .controls {
+                width: 90%;
+                justify-content: space-between;
+                display: flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Catch the Ball Game</h1>
+    <div class="score-board">Score: <span id="score">0</span></div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="controls">
+        <button id="leftBtn">Left</button>
+        <button id="rightBtn">Right</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const ballRadius = 10;
+        let balls = [{
+            x: Math.random() * canvas.width,
+            y: 30,
+            dy: 2,
+            color: getRandomColor()
+        }];
+
+        const paddleHeight = 20;
+        const paddleWidth = 100;
+        let paddleX = (canvas.width - paddleWidth) / 2;
+
+        let rightPressed = false;
+        let leftPressed = false;
+        let score = 0;
+
+        const pluckSound = new Audio('https://www.soundjay.com/button/beep-07.wav'); // Use any sound file URL
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function drawBall(ball) {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawScore() {
+            document.getElementById('score').innerText = score;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            balls.forEach(drawBall);
+            drawPaddle();
+            drawScore();
+
+            let ballHitPaddle = false;
+
+            balls.forEach(ball => {
+                if (ball.y + ball.dy > canvas.height - ballRadius - paddleHeight) {
+                    if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+                        ball.y = 30;
+                        ball.x = Math.random() * canvas.width;
+                        ball.color = getRandomColor();
+                        ballHitPaddle = true;
+                        score++;
+                        pluckSound.play();
+                        if (score % 5 === 0) { // Increase speed and add a new ball every 5 points
+                            ball.dy += 0.5;
+                            balls.push({
+                                x: Math.random() * canvas.width,
+                                y: 30,
+                                dy: ball.dy,
+                                color: getRandomColor()
+                            });
+                        }
+                    } else {
+                        ball.y += ball.dy;
+                    }
+                } else {
+                    ball.y += ball.dy;
+                }
+            });
+
+            if (!ballHitPaddle && balls.every(ball => ball.y > canvas.height - ballRadius)) {
+                score = 0;
+                balls = [{
+                    x: Math.random() * canvas.width,
+                    y: 30,
+                    dy: 2,
+                    color: getRandomColor()
+                }];
+            }
+
+            if (rightPressed && paddleX < canvas.width - paddleWidth) {
+                paddleX += 7;
+            } else if (leftPressed && paddleX > 0) {
+                paddleX -= 7;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        document.addEventListener('keydown', keyDownHandler, false);
+        document.addEventListener('keyup', keyUpHandler, false);
+
+        document.getElementById('leftBtn').addEventListener('touchstart', () => leftPressed = true, false);
+        document.getElementById('leftBtn').addEventListener('touchend', () => leftPressed = false, false);
+        document.getElementById('rightBtn').addEventListener('touchstart', () => rightPressed = true, false);
+        document.getElementById('rightBtn').addEventListener('touchend', () => rightPressed = false, false);
+
+        function keyDownHandler(e) {
+            if (e.key === 'Right' || e.key === 'ArrowRight') {
+                rightPressed = true;
+            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                leftPressed = true;
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.key === 'Right' || e.key === 'ArrowRight') {
+                rightPressed = false;
+            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                leftPressed = false;
+            }
+        }
+
+        draw();
+    </script>
+</body>
+
+</html>
