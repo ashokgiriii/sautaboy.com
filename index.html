@@ -24,6 +24,7 @@
             background-color: #333;
             color: #fff;
             padding: 10px 0;
+            display: none;
             text-align: center;
         }
 
@@ -54,19 +55,21 @@
         }
 
         .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
             gap: 20px;
-            padding: 20px;
         }
 
         .grid-item {
             background-color: #222;
             border: 1px solid #ddd;
             border-radius: 10px;
+            height: 350px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            width: calc(100% / 6 - 20px);
         }
 
         .grid-item img {
@@ -89,12 +92,12 @@
 
 <body>
     <nav>
-        <!-- <ul class="navbar">
+        <ul class="navbar">
             <li><a href="#">Home</a></li>
             <li><a href="#">Games</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
-        </ul> -->
+        </ul>
     </nav>
     <main>
         <h1>Play Games</h1>
@@ -121,8 +124,8 @@
             <a href="snake.html" class="grid-item"><img src="/images/snake.png" alt="Game 7">
                 <p>Snake</p>
             </a>
-            <a href="shapeshooter.html" class="grid-item"><img src="/images/shapeshooter.png" alt="Game 8">
-                <p>Shape Shooter</p>
+            <a href="hangman.html" class="grid-item"><img src="/images/hangman.png" alt="Game 7">
+                <p>Hangman</p>
             </a>
         </div>
     </main>
