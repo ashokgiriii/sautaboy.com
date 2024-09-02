@@ -1,134 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play Games</title>
+    <title>The Enigmatic Portal</title>
+
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #111;
-        }
+        body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Courier New', Courier, monospace;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
-        * {
-            box-sizing: border-box;
-            text-decoration: none;
-            color: #fff;
-        }
+.container {
+    position: relative;
+    z-index: 1;
+}
 
-        nav {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            display: none;
-            text-align: center;
-        }
+.title {
+    font-size: 3rem;
+    animation: type 4s steps(40, end);
+}
 
-        .navbar {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
+.entry-text {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 4s 4s forwards;
+}
 
-        .navbar li {
-            display: inline;
-            margin: 0 20px;
-        }
+@keyframes type {
+    from { width: 0; }
+    to { width: 100%; }
+}
 
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
 
-        main {
-            padding: 20px;
-            text-align: center;
-        }
+/* Background Animation */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('your-background-image.jpg') no-repeat center center/cover;
+    animation: moveBackground 20s linear infinite;
+}
 
-        h1 {
-            color: #fff;
-        }
+@keyframes moveBackground {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
 
-        .grid-container {
-            display: flex;
-            flex-wrap: wrap;
-            width: 100%;
-            gap: 20px;
-        }
-
-        .grid-item {
-            background-color: #222;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            height: 350px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            width: calc(100% / 6 - 20px);
-        }
-
-        .grid-item img {
-            width: 100%;
-            height: 80%;
-        }
-
-        .grid-item p {
-            margin: 10px;
-            font-size: 16px;
-            color: #fff;
-            text-align: center;
-        }
-
-        .grid-item:hover {
-            transform: scale(1.05);
-        }
+/* Custom Cursor */
+body {
+    cursor: url('cursor-icon.png'), auto;
+}
     </style>
 </head>
-
 <body>
-    <nav>
-        <ul class="navbar">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Games</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
-    <main>
-        <h1>Play Games</h1>
-        <div class="grid-container">
-            <a href="tictactoe.html" class="grid-item">
-                <img src="/images/tictactoe.png" alt="Game 1">
-                <p>Tic Tac Toe</p>
-            </a>
-            <a href="catchtheball.html" class="grid-item"><img src="/images/catchtheball.png" alt="Game 2">
-                <p>Catch The Ball</p>
-            </a>
-            <a href="whackamole.html" class="grid-item"><img src="/images/mock.png" alt="Game 3">
-                <p>Whack a Mole</p>
-            </a>
-            <a href="rockpaperscissors.html" class="grid-item"><img src="/images/rockscissor.png" alt="Game 4">
-                <p>Rock, Paper, Scissors</p>
-            </a>
-            <a href="gauessthenumber.html" class="grid-item"><img src="/images/guessnumber.png" alt="Game 5">
-                <p>Guess the Number</p>
-            </a>
-            <a href="quiz.html" class="grid-item"><img src="/images/quiz.png" alt="Game 6">
-                <p>Quiz</p>
-            </a>
-            <a href="snake.html" class="grid-item"><img src="/images/snake.png" alt="Game 7">
-                <p>Snake</p>
-            </a>
-            <a href="hangman.html" class="grid-item"><img src="/images/hangman.png" alt="Game 7">
-                <p>Hangman</p>
-            </a>
-        </div>
-    </main>
-</body>
+    <div class="container">
+        <h1 class="title">The Enigmatic Portal</h1>
+        <p class="entry-text">What lies beyond the veil?</p>
+    </div>
 
+<script>
+    document.querySelector('.container').addEventListener('click', function() {
+    alert("You've unlocked a hidden passage!");
+    // Further actions to reveal hidden content can be added here.
+});
+
+document.addEventListener('mousemove', function(e) {
+    document.body.style.backgroundPositionX = -e.pageX/100 + 'px';
+    document.body.style.backgroundPositionY = -e.pageY/100 + 'px';
+});
+</script>
+</body>
 </html>
