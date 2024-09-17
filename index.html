@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="zxx">
 
 <head>
@@ -609,5 +610,97 @@
     </script>
 </body>
 <!-- Body End -->
+=======
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Enigmatic Portal</title>
 
+
+    <style>
+        body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Courier New', Courier, monospace;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+.title {
+    font-size: 3rem;
+    animation: type 4s steps(40, end);
+}
+
+.entry-text {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 4s 4s forwards;
+}
+
+@keyframes type {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Background Animation */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('your-background-image.jpg') no-repeat center center/cover;
+    animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* Custom Cursor */
+body {
+    cursor: url('cursor-icon.png'), auto;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">The Enigmatic Portal</h1>
+        <p class="entry-text">What lies beyond the veil?</p>
+    </div>
+>>>>>>> refs/remotes/origin/main
+
+<script>
+    document.querySelector('.container').addEventListener('click', function() {
+    alert("You've unlocked a hidden passage!");
+    // Further actions to reveal hidden content can be added here.
+});
+
+document.addEventListener('mousemove', function(e) {
+    document.body.style.backgroundPositionX = -e.pageX/100 + 'px';
+    document.body.style.backgroundPositionY = -e.pageY/100 + 'px';
+});
+</script>
+</body>
 </html>
