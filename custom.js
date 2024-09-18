@@ -1,47 +1,22 @@
-
 (function ($) {
     "use strict";
 
-    var WEA = {};
-    var plugin_track = 'assets/vendor/';
+    // Check if an element exists
     $.fn.exists = function () {
         return this.length > 0;
     };
 
-
-
-    /* ---------------------------------------------- /*
-     * Header Fixed
-    /* ---------------------------------------------- */
-    WEA.HeaderFixd = function () {
-        var HscrollTop = $(window).scrollTop();
-        if (HscrollTop >= 100) {
-            $('body').addClass('fixed-header');
-        }
-        else {
-            $('body').removeClass('fixed-header');
-        }
+    // Function to fix the header on scroll
+    function toggleHeaderFix() {
+        $('body').toggleClass('fixed-header', $(window).scrollTop() >= 100);
     }
-
-
-
-
-
 
     // Document on Ready
     $(document).ready(function () {
-        WEA.HeaderFixd(),
-            $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
+        toggleHeaderFix();
     });
 
-    // Document on Scrool
-    $(window).on("scroll", function () {
-        WEA.HeaderFixd();
-    });
-
-    // Window on Resize
-    $(window).on("resize", function () {
-    });
-
+    // Document on Scroll
+    $(window).on("scroll", toggleHeaderFix);
 
 })(jQuery);

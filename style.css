@@ -162,6 +162,11 @@
         right: 0px;
     }
 
+    .image-hidden-on-phone {
+
+        display: none;
+    }
+
 
     .main-header .navbar-nav>li {
         padding: 10px;
