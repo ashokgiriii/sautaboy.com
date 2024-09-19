@@ -629,13 +629,13 @@
             event.preventDefault(); // Prevent form from reloading the page
             // Clear the form after successful submission
             console.log('Form submitted');
-            // document.querySelector('#contact-form').reset();
 
             // Send form data using EmailJS
             emailjs.sendForm('service_hzxv2zn', 'template_lbe5m6l', this)
                 .then(function (response) {
                     console.log('Success:', response); // Log successful response
                     alert('Message Sent!');
+                    document.querySelector('#contact-form').reset();
 
                 }, function (error) {
                     console.error('Failed to send message:', error); // Log error details
