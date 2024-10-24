@@ -1,3 +1,24 @@
+#loading-screen {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: #000; */
+    z-index: 9999999;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+footer,header,main{
+    opacity: 0;
+}
+
+#loading-screen img {
+    height: 20rem;
+}
+
 .main-header {
     position: fixed;
     top: 0;
