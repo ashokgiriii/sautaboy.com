@@ -1,5 +1,7 @@
 const tl = gsap.timeline()
-tl.from("#loading-screen img", {
+tl.to("#loading-screen", {
+    opacity: 1
+}).from("#loading-screen img", {
     opacity: 0,
     duration: 2.5,
     scale: 0,

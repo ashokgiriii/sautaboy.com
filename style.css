@@ -9,9 +9,12 @@
     position: fixed;
     top: 0;
     left: 0;
+    opacity: 0;
 }
 
-footer,header,main{
+footer,
+header,
+main {
     opacity: 0;
 }
 
