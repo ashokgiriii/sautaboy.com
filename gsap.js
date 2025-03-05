@@ -4,7 +4,7 @@ tl.to("#loading-screen", {
     backgroundColor: "#fff"
 }).from("#loading-screen img", {
     opacity: 0,
-    duration: 1,
+    duration: .5,
     scale: 0,
     rotate: 360,
     ease: "power2.out"
@@ -30,7 +30,7 @@ document.querySelector("#whole").addEventListener("mousemove", (dets) => {
     gsap.to("#curser", {
         x: dets.x,
         y: dets.y,
-        duration: 1,
+        duration: .5,
         ease: "back.out"
     })
 })
@@ -43,7 +43,7 @@ document.querySelectorAll("img").forEach((each) => {
                 x: dets.x,
                 y: dets.y,
                 scale: 3,
-                duration: 1,
+                duration: .5,
                 backgroundColor: "red",
                 ease: "back.out"
             })
@@ -64,15 +64,3 @@ document.querySelectorAll("img").forEach((each) => {
 })
 
 
-
-gsap.to("#sliding-gallery img", {
-    transform: "translateX(-270%)",
-    scrollTrigger: {
-        trigger: "#sliding-gallery",
-        scroller: "body",
-        start: "top 0%",
-        end: "top -30%",
-        scrub: 2,
-        pin: true,
-    }
-})
