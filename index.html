@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="zxx">
 
-
-
-
-
 <head>
     <!-- metas -->
     <meta charset="utf-8">
@@ -27,6 +23,13 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+    <script>
+        // Initialize EmailJS with your Public Key
+        (function () {
+            emailjs.init("SVVxb1X0FlLRvTy_E"); // Replace YOUR_PUBLIC_KEY with your actual EmailJS public key
+        })();
+    </script>
 
 
 </head>
@@ -107,7 +110,7 @@
                 <div class="container">
                     <div class="row gy-5 align-items-center">
                         <div class="col-lg-6 text-center image-hidden-on-phone">
-                            <img src="images/aboutme-banner.png" title="" alt="">
+                            <img src="images/freelancer.jpg" title="" alt="">
                         </div>
                         <div class="col-lg-6 ps-lg-5">
                             <div class="about-text">
@@ -273,7 +276,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6 text-center">
-                            <img src="images/skills.png" title="" alt="">
+                            <img src="images/lado.png" title="" alt="">
                         </div>
                     </div>
                 </div>
@@ -415,46 +418,159 @@
                                     <div class="row gx-3 gy-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label">First name</label>
-                                                <input name="user_name" id="name" placeholder="Name *"
+                                                <label class="form-label">👤 First name</label>
+                                                <input name="user_name" id="name" placeholder="Enter your name *"
                                                     class="form-control" type="text">
+                                                <small class="error" id="name-error"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label">Your Email</label>
-                                                <input name="user_email" id="email" placeholder="Email *"
+                                                <label class="form-label">📧 Your Email</label>
+                                                <input name="user_email" id="email" placeholder="Enter your email *"
                                                     class="form-control" type="email">
+                                                <small class="error" id="email-error"></small>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label class="form-label">Subject</label>
-                                                <input name="user_subject" id="subject" placeholder="Subject *"
+                                                <label class="form-label">📌 Subject</label>
+                                                <input name="user_subject" id="subject" placeholder="Enter subject *"
                                                     class="form-control" type="text">
+                                                <small class="error" id="subject-error"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">Your message</label>
-                                                <textarea name="user_message" id="message" placeholder="Your message *"
-                                                    rows="4" class="form-control"></textarea>
+                                                <label class="form-label">✍️ Your Message</label>
+                                                <textarea name="user_message" id="message"
+                                                    placeholder="Enter your message *" rows="4"
+                                                    class="form-control"></textarea>
+                                                <small class="error" id="message-error"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="send">
                                                 <button class="px-btn px-btn-theme2" id="contact-form-submit"
-                                                    type="submit" value="Send"> Send
-                                                    Message</button>
+                                                    type="submit">🚀 Send Message</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
+
+                                <script>
+                                    document.querySelector('#contact-form').addEventListener('submit', function (event) {
+                                        event.preventDefault(); // Prevent form from reloading the page
+                                        document.body.style.opacity = "0.5"; // Dim the body
+                                        let valid = validateForm();
+                                        if (valid) {
+                                            // Send form data using EmailJS
+                                            emailjs.sendForm('service_kob5em4', 'template_hn6i6h5', this)
+                                                .then(function (response) {
+                                                    console.log('Success:', response); // Log successful response
+                                                    alert('🎉 Message Sent!');
+                                                    document.querySelector('#contact-form').reset();
+                                                    document.body.style.opacity = "1"; // Restore brightness
+                                                }, function (error) {
+                                                    console.error('Failed to send message:', error); // Log error details
+                                                    alert('Failed to send message, please try again.');
+                                                    document.body.style.opacity = "1"; // Restore brightness
+                                                });
+                                        } else {
+                                            document.body.style.opacity = "1"; // Restore brightness if invalid
+                                        }
+                                    });
+
+                                    // Input event listener for validation
+                                    document.getElementById("contact-form").addEventListener("input", function (event) {
+                                        validateField(event.target.id);
+                                    });
+
+                                    function validateForm() {
+                                        let fields = ["name", "email", "subject", "message"];
+                                        let valid = true;
+                                        fields.forEach(field => {
+                                            if (!validateField(field)) valid = false;
+                                        });
+                                        return valid;
+                                    }
+
+                                    function validateField(fieldId) {
+                                        let field = document.getElementById(fieldId);
+                                        let error = document.getElementById(fieldId + "-error");
+                                        let value = field.value.trim();
+
+                                        if (!value) {
+                                            error.innerText = "⚠️ This field is required";
+                                            field.style.borderColor = "red";
+                                            return false;
+                                        }
+
+                                        if (fieldId === "name" && !/^[a-zA-Z ]+$/.test(value)) {
+                                            error.innerText = "⚠️ Name must contain only letters";
+                                            field.style.borderColor = "red";
+                                            return false;
+                                        }
+
+                                        if (fieldId === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                                            error.innerText = "⚠️ Enter a valid email address";
+                                            field.style.borderColor = "red";
+                                            return false;
+                                        }
+
+                                        if (fieldId === "message") {
+                                            let wordCount = value.split(" ").filter(w => w.length > 0).length;
+                                            if (wordCount < 5 || wordCount > 100) {
+                                                error.innerText = "⚠️ Message must be between 5 and 100 words";
+                                                field.style.borderColor = "red";
+                                                return false;
+                                            }
+                                        }
+
+                                        error.innerText = "";
+                                        field.style.borderColor = "green";
+                                        return true;
+                                    }
+                                </script>
+
+
+                                <style>
+                                    .error {
+                                        color: red;
+                                        font-size: 12px;
+                                        margin-top: 5px;
+                                        display: block;
+                                    }
+
+                                    .form-control {
+                                        border: 2px solid #ccc;
+                                        padding: 8px;
+                                        border-radius: 5px;
+                                    }
+
+                                    .form-control:focus {
+                                        border-color: blue;
+                                    }
+
+                                    button {
+                                        background-color: #28a745;
+                                        color: white;
+                                        padding: 10px 20px;
+                                        border: none;
+                                        cursor: pointer;
+                                        border-radius: 5px;
+                                        font-size: 16px;
+                                    }
+
+                                    button:hover {
+                                        background-color: #218838;
+                                    }
+                                </style>
                             </div>
                         </div>
                         <div class="col-lg-5 ms-auto col-xl-4">
                             <div class="pb-5">
-                                <img class="w-100" src="images/aboutme-banner.png" title="" alt="">
+                                <img class="w-100" src="images/email.jpg" title="" alt="">
                             </div>
                             <ul class="contact-infos">
                                 <li>
@@ -664,34 +780,6 @@
         </script>
 
 
-        <!-- emailjs.init("Un1WWY2lu639UaKaA"); // Replace YOUR_USER_ID with your actual EmailJS User ID -->
-
-        <script>
-            // Initialize EmailJS with your Public Key
-            (function () {
-                emailjs.init("Un1WWY2lu639UaKaA"); // Replace YOUR_PUBLIC_KEY with your actual EmailJS public key
-
-            })();
-
-            // Form submission handler
-            document.querySelector('#contact-form').addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent form from reloading the page
-                // Clear the form after successful submission
-                console.log('Form submitted');
-
-                // Send form data using EmailJS
-                emailjs.sendForm('service_hzxv2zn', 'template_lbe5m6l', this)
-                    .then(function (response) {
-                        console.log('Success:', response); // Log successful response
-                        alert('Message Sent!');
-                        document.querySelector('#contact-form').reset();
-
-                    }, function (error) {
-                        console.error('Failed to send message:', error); // Log error details
-                        alert('Failed to send message, please try again.');
-                    });
-            });
-        </script>
 
 
 
