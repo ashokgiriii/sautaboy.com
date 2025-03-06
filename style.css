@@ -5,8 +5,15 @@
     top: 0;
     left: 0;
     border-radius: 50%;
-    background: linear-gradient(red, white);
     z-index: 99999999999;
+    background-image: url("/images/aboutme-banner.png");
+    background-size: cover;
+    background-position: center;
+}
+
+body,
+html {
+    background: #fff;
 }
 
 #loading-screen {
@@ -201,7 +208,7 @@ main {
         right: 0px;
     }
 
-    #curser{
+    #curser {
         display: none;
     }
 
