@@ -2,49 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smooth Infinite Scroll Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sautaboy Pinterest Gallery</title>
+    <link rel="shortcut icon" href="/images/aboutme-banner.png" type="image/x-icon">
+
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      background: #f0f0f0;
-      font-family: sans-serif;
-      scroll-behavior: smooth;
+      background: #f3f3f3;
+      font-family: Arial, sans-serif;
+      height: 100vh;
       overflow-y: scroll;
+          
+      background: #000;
+
     }
 
     .gallery {
       column-count: 1;
-      column-gap: 12px;
-      padding: 12px;
+      column-gap: 10px;
+      padding: 10px;
     }
 
     .gallery img {
       width: 100%;
-      margin-bottom: 12px;
-      border-radius: 12px;
+      margin-bottom: 10px;
+      border-radius: 10px;
       break-inside: avoid;
-      opacity: 0;
-      transform: scale(0.98);
-      animation: fadeIn 0.5s ease-in forwards;
       transition: transform 0.3s ease;
       cursor: pointer;
+      display: block;
     }
 
     .gallery img:hover {
       transform: scale(1.02);
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
     }
 
     @media (min-width: 600px) {
@@ -72,42 +68,15 @@
 
   <script>
     const gallery = document.getElementById("gallery");
+    const imageCount = 104;
 
-    let currentImage = 2;
-    const maxImage = 104;
-    const batchSize = 10;
-    let isLoading = false;
-
-    function loadImages() {
-      if (isLoading) return;
-      isLoading = true;
-
-      setTimeout(() => {
-        for (let i = 0; i < batchSize; i++) {
-          const img = document.createElement("img");
-          img.src = `/images/img (${currentImage}).jpg`;
-          img.alt = `Image ${currentImage}`;
-          img.loading = "lazy";
-          gallery.appendChild(img);
-
-          currentImage++;
-          if (currentImage > maxImage) currentImage = 2;
-        }
-        isLoading = false;
-      }, 300); // smooth delay
+    for (let i = 2; i <= imageCount; i++) {
+      const img = document.createElement("img");
+      img.src = `/images/img (${i}).jpg`;
+      img.alt = `Image ${i}`;
+      img.loading = "lazy";
+      gallery.appendChild(img);
     }
-
-    // Initial images
-    loadImages();
-
-    // Infinite scroll with smoothness
-    window.addEventListener("scroll", () => {
-      const scrollY = window.scrollY;
-      const threshold = document.body.offsetHeight - window.innerHeight - 300;
-      if (scrollY >= threshold) {
-        loadImages();
-      }
-    });
   </script>
 
 </body>
