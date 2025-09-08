@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poetic Status | sautaboy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        min-height: 100vh;
+        color: #e2e8f0;
+      }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        overflow: hidden;
+      }
+      .header-accent {
+        position: relative;
+        padding-left: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .header-accent:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+        border-radius: 4px;
+      }
+      .poetry-font {
+        font-family: "Crimson Pro", serif;
+      }
+      .status-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+      }
+      .status-card:hover {
+        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+      .mood-indicator {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .creative {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      }
+      .inspired {
+        background: linear-gradient(135deg, #4ade80, #22d3ee);
+      }
+      .reflective {
+        background: linear-gradient(135deg, #f97316, #f43f5e);
+      }
+      .melancholic {
+        background: linear-gradient(135deg, #6b7280, #1e40af);
+      }
+      .playful {
+        background: linear-gradient(135deg, #f59e0b, #ec4899);
+      }
+      textarea {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: #e2e8f0;
+        padding: 1rem;
+        width: 100%;
+        resize: vertical;
+        min-height: 150px;
+        font-family: "Crimson Pro", serif;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+      }
+      .timestamp {
+        color: #a3bffa;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <header class="flex justify-between items-center mb-8">
+        <div>
+          <h1 class="text-3xl font-bold">Inner Status</h1>
+        </div>
+        <a
+          href="index.html"
+          class="glass-panel px-4 py-2 hover:bg-indigo-500/10 transition-colors"
+        >
+          <i class="fas fa-arrow-left mr-2"></i>Back to Portfolio
+        </a>
+      </header>
+
+      <!-- New Status Form -->
+      <div class="glass-panel p-6 mb-8" style="display: none">
+        <h2 class="header-accent text-xl font-bold">Compose New Status</h2>
+
+        <div class="mb-4">
+          <label class="block text-gray-300 mb-2">Current Mood</label>
+          <div class="flex flex-wrap gap-3">
+            <label class="flex items-center">
+              <input
+                type="radio"
+                name="mood"
+                value="creative"
+                class="mr-2"
+                checked
+              />
+              <span class="mood-indicator creative"></span> Creative
+            </label>
+            <label class="flex items-center">
+              <input type="radio" name="mood" value="inspired" class="mr-2" />
+              <span class="mood-indicator inspired"></span> Inspired
+            </label>
+            <label class="flex items-center">
+              <input type="radio" name="mood" value="reflective" class="mr-2" />
+              <span class="mood-indicator reflective"></span> Reflective
+            </label>
+            <label class="flex items-center">
+              <input
+                type="radio"
+                name="mood"
+                value="melancholic"
+                class="mr-2"
+              />
+              <span class="mood-indicator melancholic"></span> Melancholic
+            </label>
+            <label class="flex items-center">
+              <input type="radio" name="mood" value="playful" class="mr-2" />
+              <span class="mood-indicator playful"></span> Playful
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <textarea
+            id="poetry-input"
+            placeholder="Write your poetic status here... Let your words flow like a river, unhindered by the constraints of prose."
+          ></textarea>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <div class="text-sm text-gray-400" id="char-count">0 characters</div>
+          <button class="btn-primary" id="publish-btn">
+            <i class="fas fa-feather-alt mr-2"></i>Publish
+          </button>
+        </div>
+      </div>
+
+      <!-- Status Feed -->
+      <div class="glass-panel p-6">
+        <div id="status-feed">
+          <!-- Sample statuses -->
+          <div class="status-card">
+            <div class="flex justify-between items-center mb-3">
+              <div class="flex items-center">
+                <!-- title -->
+                <span class="font-semibold">Sunna Jaruri xa ra ?</span>
+              </div>
+              <!-- <span class="timestamp">Today, 3:45 PM</span> -->
+            </div>
+            <div class="poetry-font text-lg leading-relaxed">
+             K jabarjasti garu, <br>
+             Naboli basna sakneylai
+            </div>
+          </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="text-center text-gray-400 mt-8 text-sm">
+        <p>
+          Poetic Status • A creative outlet for
+          <span class="text-indigo-300">sautaboy</span>
+        </p>
+        <p class="mt-2">Your words are like stars in the digital sky</p>
+      </footer>
+    </div>
+
+    <script>
+      // Character count for textarea
+      const textarea = document.getElementById("poetry-input");
+      const charCount = document.getElementById("char-count");
+
+      textarea.addEventListener("input", () => {
+        const count = textarea.value.length;
+        charCount.textContent = `${count} characters`;
+
+        if (count > 300) {
+          charCount.classList.add("text-yellow-300");
+        } else {
+          charCount.classList.remove("text-yellow-300");
+        }
+
+        if (count > 500) {
+          charCount.classList.remove("text-yellow-300");
+          charCount.classList.add("text-red-300");
+        }
+      });
+
+      // Publish functionality
+      document.getElementById("publish-btn").addEventListener("click", () => {
+        const mood = document.querySelector('input[name="mood"]:checked').value;
+        const text = textarea.value.trim();
+
+        if (text.length < 10) {
+          alert("Your poetic status needs to be at least 10 characters long.");
+          return;
+        }
+
+        if (text.length > 500) {
+          alert("Please keep your status under 500 characters.");
+          return;
+        }
+
+        // Create new status element
+        const newStatus = document.createElement("div");
+        newStatus.className = "status-card";
+
+        // Get mood label
+        let moodLabel = mood.charAt(0).toUpperCase() + mood.slice(1);
+
+        // Create HTML for new status
+        newStatus.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center">
+                        <span class="mood-indicator ${mood}"></span>
+                        <span class="font-semibold">${moodLabel}</span>
+                    </div>
+                    <span class="timestamp">Just now</span>
+                </div>
+                <div class="poetry-font text-lg leading-relaxed">${text.replace(
+                  /\n/g,
+                  "<br>"
+                )}</div>
+            `;
+
+        // Add to the top of the feed
+        document.getElementById("status-feed").prepend(newStatus);
+
+        // Clear textarea
+        textarea.value = "";
+        charCount.textContent = "0 characters";
+
+        // Show confirmation
+        alert("Your poetic status has been published!");
+      });
+
+      // Add line breaks on Enter (but allow Shift+Enter for new lines)
+      textarea.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          document.getElementById("publish-btn").click();
+        }
+      });
+    </script>
+  </body>
+</html>
